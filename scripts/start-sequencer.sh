@@ -35,7 +35,7 @@ fi
 
 cd "$ROOT_DIR/sequencer"
 docker compose config --quiet
-docker compose up -d
+docker compose up -d op-reth op-node
 
 echo
 echo "Sequencer services started."

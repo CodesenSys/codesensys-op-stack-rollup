@@ -22,12 +22,12 @@ services:
       - --http
       - --http.addr=0.0.0.0
       - --http.port=8545
-      - --http.api=admin,debug,eth,net,txpool,web3
+      - --http.api=admin,debug,eth,miner,net,txpool,web3
       - --http.corsdomain=*
       - --ws
       - --ws.addr=0.0.0.0
       - --ws.port=8546
-      - --ws.api=admin,debug,eth,net,txpool,web3
+      - --ws.api=admin,debug,eth,miner,net,txpool,web3
       - --ws.origins=*
       - --authrpc.addr=0.0.0.0
       - --authrpc.port=8551
@@ -81,5 +81,35 @@ services:
       - --rpc.port=8547
       - --rpc.enable-admin
       - --safedb.path=/workspace/data/safedb
+      - --log.level=info
+      - --log.format=terminal
+
+  op-batcher:
+    image: us-docker.pkg.dev/oplabs-tools-artifacts/images/op-batcher:v1.16.8
+    container_name: codesensys-op-batcher
+    restart: unless-stopped
+
+    depends_on:
+      - op-reth
+      - op-node
+
+    ports:
+      - "127.0.0.1:8548:8548"
+
+    environment:
+      L1_RPC_URL: ${L1_RPC_URL}
+      BATCHER_PRIVATE_KEY: ${BATCHER_PRIVATE_KEY}
+
+    command:
+      - op-batcher
+      - --l1-eth-rpc=${L1_RPC_URL}
+      - --l2-eth-rpc=http://op-reth:8545
+      - --rollup-rpc=http://op-node:8547
+      - --private-key=${BATCHER_PRIVATE_KEY}
+      - --data-availability-type=calldata
+      - --poll-interval=6s
+      - --rpc.addr=0.0.0.0
+      - --rpc.port=8548
+      - --rpc.enable-admin
       - --log.level=info
       - --log.format=terminal

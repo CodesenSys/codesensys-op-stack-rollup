@@ -199,3 +199,31 @@ CodesenSys/codesensys-enterprise-op-stack
 ## License
 
 MIT
+
+## Verified Operational Milestones
+
+The CodesenSys OP Stack rollup has successfully completed the following infrastructure milestones:
+
+- ✅ OP Stack L1 contracts deployed to Ethereum Sepolia
+- ✅ Custom L2 genesis and rollup configuration generated
+- ✅ `op-reth` execution engine operational
+- ✅ `op-node` sequencer operational
+- ✅ L2 block production verified on chain ID `3399647`
+- ✅ `op-batcher` published compressed L2 batches to Ethereum Sepolia
+- ✅ Batch transaction successfully mined on L1
+- ✅ Safe L2 derivation verified
+- ✅ Finalized L2 progression verified
+
+### Evidence
+
+Operational evidence for the batch publication milestone is available at:
+
+`docs/evidence/batcher-proof.md`
+
+### Next Milestones
+
+- Deploy and configure `op-proposer`
+- Verify L2 output proposal publication
+- Deploy enterprise smart contracts to the CodesenSys L2
+- Demonstrate complete enterprise application workflow on the rollup
+
