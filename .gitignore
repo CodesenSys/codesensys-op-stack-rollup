@@ -1,0 +1,49 @@
+# Secrets and environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.mnemonic
+*.jwt
+jwt.txt
+
+# Encrypted or plaintext wallet material
+deployer/address/keystores/
+deployer/address/private/
+deployer/address/*private*
+deployer/address/*secret*
+# Mutable deployment state
+deployer/.deployer/state.json
+# Runtime databases and logs
+data/
+logs/
+reth-data/
+node-data/
+batcher-data/
+proposer-data/
+challenger-data/
+# macOS
+.DS_Store
+# OP Stack mutable deployment data
+deployer/.deployer/state*.json
+# Local wallet material
+# Sequencer runtime state
+sequencer/data/
+sequencer/logs/
+# Engine authentication
+sequencer/jwt/
+**/jwt.txt
+# Local Docker overrides
+docker-compose.override.yml
+# Temporary and backup files
+*.tmp
+*.bak
+*.swp
+
+# Local intent backups
+deployer/.deployer/intent.*.toml
+!deployer/.deployer/intent.toml
+
+# Generated sequencer configuration copies
+sequencer/config/

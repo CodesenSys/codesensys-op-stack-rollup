@@ -1,0 +1,85 @@
+services:
+  op-reth:
+    image: us-docker.pkg.dev/oplabs-tools-artifacts/images/nexus/op-reth:v2.4.1
+    container_name: codesensys-op-reth
+    restart: unless-stopped
+
+    volumes:
+      - ./config:/workspace/config:ro
+      - ./jwt:/workspace/jwt:ro
+      - ./data/op-reth:/workspace/data
+      - ./logs:/workspace/logs
+
+    ports:
+      - "127.0.0.1:8545:8545"
+      - "127.0.0.1:8546:8546"
+      - "127.0.0.1:8551:8551"
+
+    command:
+      - node
+      - --chain=/workspace/config/genesis.json
+      - --datadir=/workspace/data
+      - --http
+      - --http.addr=0.0.0.0
+      - --http.port=8545
+      - --http.api=admin,debug,eth,net,txpool,web3
+      - --http.corsdomain=*
+      - --ws
+      - --ws.addr=0.0.0.0
+      - --ws.port=8546
+      - --ws.api=admin,debug,eth,net,txpool,web3
+      - --ws.origins=*
+      - --authrpc.addr=0.0.0.0
+      - --authrpc.port=8551
+      - --authrpc.jwtsecret=/workspace/jwt/jwt.txt
+      - --disable-discovery
+      - --rollup.disable-tx-pool-gossip
+      - --builder.deadline=2
+      - --builder.interval=100ms
+      - --log.file.directory=/workspace/logs
+      - --log.file.name=op-reth.log
+      - --log.stdout.format=terminal
+
+  op-node:
+    image: us-docker.pkg.dev/oplabs-tools-artifacts/images/op-node:v1.19.3
+    container_name: codesensys-op-node
+    restart: unless-stopped
+
+    depends_on:
+      - op-reth
+
+    volumes:
+      - ./config:/workspace/config:ro
+      - ./jwt:/workspace/jwt:ro
+      - ./data/op-node:/workspace/data
+
+    ports:
+      - "127.0.0.1:8547:8547"
+
+    environment:
+      L1_RPC_URL: ${L1_RPC_URL}
+      L1_BEACON_URL: ${L1_BEACON_URL}
+      SEQUENCER_PRIVATE_KEY: ${SEQUENCER_PRIVATE_KEY}
+
+    command:
+      - op-node
+      - --l1=${L1_RPC_URL}
+      - --l1.beacon=${L1_BEACON_URL}
+      - --l1.rpckind=alchemy
+      - --l2=http://op-reth:8551
+      - --l2.jwt-secret=/workspace/jwt/jwt.txt
+      - --l2.enginekind=reth
+      - --rollup.config=/workspace/config/rollup.json
+      - --sequencer.enabled=true
+      - --sequencer.stopped=false
+      - --sequencer.l1-confs=4
+      - --sequencer.max-safe-lag=3600
+      - --verifier.l1-confs=4
+      - --p2p.disable=true
+      - --p2p.sequencer.key=${SEQUENCER_PRIVATE_KEY}
+      - --rpc.addr=0.0.0.0
+      - --rpc.port=8547
+      - --rpc.enable-admin
+      - --safedb.path=/workspace/data/safedb
+      - --log.level=info
+      - --log.format=terminal
