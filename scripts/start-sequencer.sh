@@ -37,8 +37,8 @@ cd "$ROOT_DIR/sequencer"
 docker compose config --quiet
 docker compose up -d
 
-unset SEQUENCER_PRIVATE_KEY
-
 echo
 echo "Sequencer services started."
 docker compose ps
+
+unset SEQUENCER_PRIVATE_KEY
