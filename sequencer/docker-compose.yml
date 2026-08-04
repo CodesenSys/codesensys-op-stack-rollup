@@ -113,3 +113,37 @@ services:
       - --rpc.enable-admin
       - --log.level=info
       - --log.format=terminal
+
+  op-proposer:
+    image: us-docker.pkg.dev/oplabs-tools-artifacts/images/op-proposer:v1.16.3
+    container_name: codesensys-op-proposer
+    restart: unless-stopped
+
+    depends_on:
+      - op-node
+
+    ports:
+      - "127.0.0.1:8549:8549"
+
+    environment:
+      L1_RPC_URL: ${L1_RPC_URL}
+      PROPOSER_PRIVATE_KEY: ${PROPOSER_PRIVATE_KEY}
+
+    command:
+      - op-proposer
+      - --l1-eth-rpc=${L1_RPC_URL}
+      - --rollup-rpc=http://op-node:8547
+      - --private-key=${PROPOSER_PRIVATE_KEY}
+      - --game-factory-address=0xb22096a934ae1182e11d3a2271cd9607b74e0de1
+      - --game-type=1
+      - --proposal-interval=1h
+      - --poll-interval=20s
+      - --wait-node-sync=true
+      - --allow-non-finalized=false
+      - --num-confirmations=1
+      - --resubmission-timeout=30s
+      - --rpc.addr=0.0.0.0
+      - --rpc.port=8549
+      - --rpc.enable-admin
+      - --log.level=info
+      - --log.format=terminal

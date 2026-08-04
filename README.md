@@ -227,3 +227,22 @@ Operational evidence for the batch publication milestone is available at:
 - Deploy enterprise smart contracts to the CodesenSys L2
 - Demonstrate complete enterprise application workflow on the rollup
 
+
+## Proposer and Dispute Game Milestone
+
+The rollup has successfully completed its first L2 state proposal.
+
+### Verified
+
+- ✅ `op-proposer v1.16.3` connected to the deployed DisputeGameFactory
+- ✅ Permissioned dispute game (Game Type 1)
+- ✅ Output root submitted to Ethereum Sepolia
+- ✅ Proposal transaction mined successfully
+- ✅ Dispute-game bond posted
+- ✅ First dispute game created successfully
+- ✅ Permissioned fault-proof pipeline verified
+
+See:
+
+- `docs/evidence/proposer-proof.md`
+
