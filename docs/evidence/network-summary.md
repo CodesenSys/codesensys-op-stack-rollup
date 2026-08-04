@@ -47,7 +47,7 @@ Only public addresses are documented here.
 | Batcher | `0x5AD8be46F988E996d2aDa2E0C21738936C439963` |
 | Proposer | `0xc4cC8488a09324f3A4ba280B33D4916F2acD82c7` |
 
-## Current operating scope
+## Operating scope
 
 The repository demonstrates:
 
@@ -55,10 +55,23 @@ The repository demonstrates:
 - custom chain ID and genesis configuration;
 - dedicated administrative and runtime roles;
 - `op-reth` execution;
-- `op-node` sequencing;
+- `op-node` sequencing and derivation;
 - authenticated Engine API communication using JWT;
+- `op-batcher` publication of compressed L2 data to Sepolia;
+- safe and finalized L2 progression;
+- `op-proposer` state claims;
+- permissioned dispute-game creation;
+- L1-to-L2 ETH deposits;
 - locally bound JSON-RPC endpoints.
 
-The current deployment does not yet operate a public RPC gateway, batch
-submission service, proposer service, challenger service, or production-grade
-multisignature governance.
+The current deployment is a persistent single-machine Sepolia reference environment.
+
+Production deployment would additionally require:
+
+- a public RPC gateway and rate limiting;
+- challenger infrastructure;
+- redundant execution and rollup nodes;
+- multisignature governance;
+- managed secret storage;
+- monitoring, alerting, and incident response;
+- automated backups and disaster recovery.
